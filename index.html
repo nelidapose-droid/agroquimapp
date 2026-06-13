@@ -1,3 +1,6 @@
+❌ Cambio 1 NO encontrado — verificar
+✅ Cambio 2 aplicado: HTML bottom-nav
+❌ Cambio 3 NO encontrado
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -162,9 +165,35 @@ nav{position:sticky;top:0;z-index:100;background:rgba(15,15,26,0.92);backdrop-fi
 .search-bar::placeholder{color:var(--texto-sub);}
 .section-title{font-size:1.45rem;font-weight:900;margin-bottom:5px;}
 .section-sub{color:var(--texto-sub);font-size:.85rem;margin-bottom:20px;}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1.5px solid var(--verde);color:var(--texto);padding:10px 20px;border-radius:12px;font-weight:700;font-size:.88rem;z-index:1000;transition:transform .3s ease;pointer-events:none;white-space:nowrap;}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1.5px solid var(--verde);color:var(--texto);padding:10px 20px;border-radius:12px;font-weight:700;font-size:.88rem;z-index:1000;transition:transform .3s ease;pointer-events:none;white-space:nowrap;}
 #toast.show{transform:translateX(-50%) translateY(0);}
-@media(max-width:600px){.hero h1{font-size:1.8rem;}.nav-pills{display:none;}.screen{padding:16px 12px;}}
+
+/* ====== BOTTOM NAV — solo móvil ====== */
+.bottom-nav{display:none;}
+@media(max-width:600px){
+  .hero h1{font-size:1.8rem;}
+  .nav-pills{display:none;}
+  .screen{padding:16px 12px;padding-bottom:76px;}
+  .bottom-nav{
+    display:flex;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:rgba(15,15,26,0.97);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--borde);
+    z-index:200;
+    padding:6px 0 env(safe-area-inset-bottom,6px);
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;
+    gap:3px;padding:6px 4px;cursor:pointer;
+    font-size:.62rem;font-weight:700;color:var(--texto-sub);
+    transition:color .2s;border:none;background:transparent;
+    font-family:'Nunito',sans-serif;
+  }
+  .bn-item.active,.bn-item:hover{color:var(--verde);}
+  .bn-icon{font-size:1.35rem;line-height:1;}
+}
 </style>
 </head>
 <body>
@@ -251,6 +280,19 @@ nav{position:sticky;top:0;z-index:100;background:rgba(15,15,26,0.92);backdrop-fi
     <div class="achievements"><h3>🏅 Logros</h3><div class="badge-row" id="badges-row"></div></div>
   </div>
 </div>
+
+<!-- BOTTOM NAV — visible solo en móvil -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bn-item active" id="bn-home" onclick="showScreen('home')">
+    <span class="bn-icon">🏠</span>Inicio
+  </button>
+  <button class="bn-item" id="bn-explorer" onclick="showScreen('explorer')">
+    <span class="bn-icon">🔭</span>Elementos
+  </button>
+  <button class="bn-item" id="bn-stats" onclick="showScreen('stats')">
+    <span class="bn-icon">📊</span>Progreso
+  </button>
+</nav>
 
 <script>
 // ======================================================
@@ -383,9 +425,9 @@ const MODULES = [
        wrongFeedback:'❌ Paso 1: n(H₂O) = 9g/18g/mol = 0,5 mol. Paso 2: n(H) = 0,5 mol × 2 H/molécula = 1 mol de átomos H. Paso 3: átomos = 1×6,02×10²³ ≈ 1,204×10²⁴. Cada molécula de agua tiene 2 átomos de H.'},
       {context:'🌾 El superfosfato simple Ca(H₂PO₄)₂ tiene M=234 g/mol. Contiene dos P por fórmula unidad.',
        text:'¿Cuántos gramos de fósforo (Ar P=31) hay en 117 g de Ca(H₂PO₄)₂?',
-       options:['31 g','62 g','15,5 g','93 g'],correct:1,
-       feedback:'✅ n = 117/234 = 0,5 mol de Ca(H₂PO₄)₂. Cada fórmula tiene 2 P → n(P) = 0,5×2 = 1 mol de P. Masa P = 1×31 = 31 g. Espera, revisemos: 117/234=0,5 mol × 2P = 1 mol P × 31 g/mol = 31 g. La respuesta correcta es 31 g. Oops, revisamos opciones — la respuesta B es 62g para 234g de reactivo. Con 117g son 31g. Recalculá siempre paso a paso.',
-       wrongFeedback:'❌ Paso 1: n = 117g/234g/mol = 0,5 mol de Ca(H₂PO₄)₂. Paso 2: n(P) = 0,5 mol × 2P/fórmula = 1 mol P. Paso 3: masa(P) = 1 mol × 31 g/mol = 31 g. En el examen de ingreso siempre se piden estos tres pasos.'},
+       options:['31 g','62 g','15,5 g','93 g'],correct:0,
+       feedback:'✅ n = 117/234 = 0,5 mol de Ca(H₂PO₄)₂. Cada fórmula tiene 2 P → n(P) = 0,5×2 = 1 mol de P. Masa P = 1×31 = 31 g.',
+       wrongFeedback:'❌ Paso 1: n = 117g/234g/mol = 0,5 mol de Ca(H₂PO₄)₂. Paso 2: n(P) = 0,5 mol × 2P/fórmula = 1 mol P. Paso 3: masa(P) = 1 mol × 31 g/mol = 31 g.'},
       {context:'🔢 La composición centesimal indica el % de cada elemento en un compuesto.',
        text:'¿Cuál es el % de N en el nitrato de amonio NH₄NO₃ (M=80 g/mol, Ar N=14)?',
        options:['17,5%','28%','35%','14%'],correct:2,
@@ -394,8 +436,8 @@ const MODULES = [
       {context:'💧 En CNTP, 4 litros de un gas desconocido tienen una masa de 5,71 g.',
        text:'¿Cuál es la masa molar del gas?',
        options:['22,4 g/mol','32 g/mol','28 g/mol','44 g/mol'],correct:1,
-       feedback:'✅ n = V/Vm = 4L/22,4L·mol⁻¹ = 0,1786 mol. M = masa/n = 5,71g/0,1786mol ≈ 32 g/mol. Ese valor corresponde al O₂ (M=32 g/mol). El Vm en CNTP permite calcular moles de gases directamente desde su volumen.',
-       wrongFeedback:'❌ n = 4L/22,4L·mol⁻¹ = 0,1786 mol. M = 5,71g / 0,1786mol ≈ 32 g/mol. Ese es el O₂. Recordá: en CNTP Vm=22,4 L/mol sirve para cualquier gas ideal y te permite calcular moles desde el volumen.'}
+       feedback:'✅ n = V/Vm = 4L/22,4L·mol⁻¹ = 0,1786 mol. M = masa/n = 5,71g/0,1786mol ≈ 32 g/mol. Ese valor corresponde al O₂ (M=32 g/mol).',
+       wrongFeedback:'❌ n = 4L/22,4L·mol⁻¹ = 0,1786 mol. M = 5,71g / 0,1786mol ≈ 32 g/mol. Ese es el O₂. Recordá: en CNTP Vm=22,4 L/mol sirve para cualquier gas ideal.'}
     ]
   },
   {
@@ -406,38 +448,38 @@ const MODULES = [
       {context:'🌾 El KCl (cloruro de potasio) es un fertilizante potásico ampliamente utilizado en agricultura.',
        text:'¿Qué tipo de enlace tiene el KCl y cómo se forma?',
        options:['Covalente polar: K y Cl comparten electrones','Iónico: K cede un e⁻ al Cl, formando K⁺ y Cl⁻ que se atraen','Metálico: electrones deslocalizados','Covalente apolar: comparten electrones por igual'],correct:1,
-       feedback:'✅ K (Z=19) tiene 1 e⁻ de valencia: lo cede. Cl (Z=17) necesita 1 e⁻ para completar el octeto: lo capta. Resultado: K⁺ y Cl⁻ se atraen electrostáticamente → enlace iónico. En agua el KCl se disocia liberando K⁺ y Cl⁻ asimilables por las plantas.',
-       wrongFeedback:'❌ K tiene 1 e⁻ de valencia (fácil de ceder) y Cl necesita 1 para su octeto. La TRANSFERENCIA de e⁻ de K a Cl forma iones K⁺ y Cl⁻ que se atraen electrostáticamente → enlace iónico. No es covalente porque no comparten: uno cede y el otro capta.'},
+       feedback:'✅ K (Z=19) tiene 1 e⁻ de valencia: lo cede. Cl (Z=17) necesita 1 e⁻ para completar el octeto: lo capta. Resultado: K⁺ y Cl⁻ se atraen electrostáticamente → enlace iónico.',
+       wrongFeedback:'❌ K tiene 1 e⁻ de valencia (fácil de ceder) y Cl necesita 1 para su octeto. La TRANSFERENCIA de e⁻ de K a Cl forma iones K⁺ y Cl⁻ → enlace iónico.'},
       {context:'💧 El agua (H₂O) tiene punto de ebullición muy alto para su masa molecular pequeña.',
        text:'¿Cuál es la estructura de Lewis correcta del H₂O?',
        options:['H—O—H sin pares libres en el O','O central con 2 pares libres y 2 enlaces simples con H','O=H₂ con doble enlace','H—O con un solo enlace y sin pares libres'],correct:1,
-       feedback:'✅ O tiene 6 e⁻ de valencia. Forma 2 enlaces con H (usa 4 e⁻), quedan 4 e⁻ → 2 pares libres. Los pares libres causan la geometría angular y la polaridad del agua, que permite los puentes de hidrógeno. Sin esto, el agua herviría a −80°C.',
-       wrongFeedback:'❌ O tiene 6 e⁻ de valencia: usa 4 en 2 enlaces con H → quedan 4 e⁻ → 2 pares libres sobre el O. Esos 2 pares libres son los responsables de la geometría angular y la polaridad del agua.'},
+       feedback:'✅ O tiene 6 e⁻ de valencia. Forma 2 enlaces con H (usa 4 e⁻), quedan 4 e⁻ → 2 pares libres. Los pares libres causan la geometría angular y la polaridad del agua.',
+       wrongFeedback:'❌ O tiene 6 e⁻ de valencia: usa 4 en 2 enlaces con H → quedan 4 e⁻ → 2 pares libres sobre el O.'},
       {context:'🌱 El N₂ atmosférico (78% del aire) debe ser "fijado" para que las plantas lo usen.',
        text:'¿Qué tipo de enlace tienen los dos átomos de N en la molécula N₂?',
        options:['Enlace iónico: N⁺ y N⁻','Enlace covalente simple: N–N','Enlace covalente triple: N≡N','Enlace metálico: electrones libres'],correct:2,
-       feedback:'✅ Cada N necesita 3 e⁻ para completar el octeto → comparten 3 pares → triple enlace N≡N. Es uno de los enlaces más fuertes conocidos (945 kJ/mol), por eso la fijación de N₂ requiere tanta energía o la enzima nitrogenasa bacteriana.',
-       wrongFeedback:'❌ N tiene 5 e⁻ de valencia, le faltan 3 para el octeto. Comparte 3 pares de e⁻ con el otro N → triple enlace N≡N. Ese triple enlace es extremadamente estable (945 kJ/mol), por eso el N₂ es tan difícil de "romper" para las plantas.'},
+       feedback:'✅ Cada N necesita 3 e⁻ para completar el octeto → comparten 3 pares → triple enlace N≡N. Es uno de los enlaces más fuertes (945 kJ/mol).',
+       wrongFeedback:'❌ N tiene 5 e⁻ de valencia, le faltan 3 para el octeto. Comparte 3 pares con el otro N → triple enlace N≡N.'},
       {context:'⚗️ Comparamos NaCl (sal de mesa) y CO₂ (gas).',
        text:'¿Por qué el NaCl tiene punto de fusión de 801°C y el CO₂ es gas a temperatura ambiente?',
        options:['Porque el NaCl tiene mayor masa molecular','NaCl: red iónica con millones de atracciones fuertes. CO₂: moléculas con débiles fuerzas de Van der Waals entre sí','Porque el CO₂ tiene más átomos totales','No hay relación entre tipo de enlace y punto de fusión'],correct:1,
-       feedback:'✅ NaCl forma una red cristalina iónica: millones de iones Na⁺ y Cl⁻ se atraen en todas direcciones → altísimo pf. CO₂ forma moléculas discretas unidas solo por débiles fuerzas de Van der Waals → pf bajísimo (−78°C). El tipo de enlace e interacción determina las propiedades físicas.',
-       wrongFeedback:'❌ El punto de fusión no depende de la masa molecular sino del tipo de interacción entre partículas. NaCl tiene red iónica (fuertísima) vs CO₂ con moléculas discretas y débiles fuerzas de Van der Waals entre moléculas.'},
+       feedback:'✅ NaCl forma una red cristalina iónica: millones de iones se atraen en todas direcciones → altísimo pf. CO₂ forma moléculas discretas con débiles fuerzas de Van der Waals → pf bajísimo.',
+       wrongFeedback:'❌ El punto de fusión no depende de la masa molecular sino del tipo de interacción entre partículas.'},
       {context:'🧪 La regla del octeto guía la formación de enlaces en la mayoría de los compuestos.',
        text:'¿Cuántos pares de electrones comparte el C con el O en la molécula de CO₂?',
        options:['Un par compartido (enlace simple) con cada O','Dos pares compartidos (doble enlace) con cada O','Tres pares compartidos (triple enlace) con cada O','Ninguno: el CO₂ tiene enlace iónico'],correct:1,
-       feedback:'✅ O=C=O: el C forma un DOBLE ENLACE con cada O. C necesita 4 e⁻ para completar su octeto y O necesita 2. Compartiendo 2 pares con cada O, ambos completan el octeto. Por eso el CO₂ es lineal y no polar.',
-       wrongFeedback:'❌ En CO₂ (O=C=O): el C forma doble enlace con cada O (2 pares compartidos con cada uno). El C aporta 2 e⁻ por enlace y el O otros 2 → 4 e⁻ compartidos = doble enlace. Así el C completa 8 e⁻ y cada O también.'},
+       feedback:'✅ O=C=O: el C forma un DOBLE ENLACE con cada O. C necesita 4 e⁻ para su octeto y O necesita 2. Así ambos completan el octeto.',
+       wrongFeedback:'❌ En CO₂: el C forma doble enlace con cada O (2 pares compartidos con cada uno).'},
       {context:'🌾 El NH₃ (amoníaco) es producto de la descomposición de fertilizantes nitrogenados.',
        text:'¿Qué tipo de enlace tiene el NH₃ y cuántos pares libres tiene el N?',
        options:['Enlace iónico — sin pares libres','Covalente — 1 par libre sobre el N','Covalente — 2 pares libres sobre el N','Covalente — sin pares libres sobre el N'],correct:1,
-       feedback:'✅ N tiene 5 e⁻ de valencia. Forma 3 enlaces simples con H (usa 3 e⁻ para enlazar) → quedan 2 e⁻ → 1 par libre sobre el N. Ese par libre hace al NH₃ una base de Lewis y le da la geometría piramidal trigonal.',
-       wrongFeedback:'❌ N en NH₃: 5 e⁻ de valencia. Usa 3 para los enlaces N–H → quedan 2 e⁻ sin compartir = 1 par libre. Ese par libre es lo que permite al NH₃ actuar como base de Lewis (puede donar el par de e⁻).'},
+       feedback:'✅ N tiene 5 e⁻ de valencia. Forma 3 enlaces con H → quedan 2 e⁻ → 1 par libre sobre el N. Ese par libre hace al NH₃ una base de Lewis.',
+       wrongFeedback:'❌ N en NH₃: 5 e⁻ de valencia. Usa 3 para los enlaces N–H → quedan 2 e⁻ = 1 par libre.'},
       {context:'⚖️ Los compuestos iónicos y covalentes tienen propiedades físicas muy distintas.',
        text:'¿Cuál de estas es una propiedad característica de los compuestos IÓNICOS?',
        options:['Son gases o líquidos a temperatura ambiente','Conducen electricidad solo en estado sólido','Alto punto de fusión y conducen electricidad cuando están disueltos o fundidos','Baja solubilidad en agua'],correct:2,
-       feedback:'✅ Los compuestos iónicos: alto pf (red cristalina fuerte), alta solubilidad en agua polar, y conducen electricidad solo cuando los iones están libres (disueltos o fundidos, no en estado sólido donde los iones están fijos).',
-       wrongFeedback:'❌ Compuestos iónicos: sólidos con alto pf, solubles en agua, y conducen electricidad cuando están disueltos o fundidos (los iones quedan libres para moverse). En estado sólido NO conducen porque los iones están en posiciones fijas.'}
+       feedback:'✅ Los compuestos iónicos: alto pf (red cristalina fuerte), alta solubilidad en agua polar, y conducen electricidad cuando los iones están libres (disueltos o fundidos).',
+       wrongFeedback:'❌ Compuestos iónicos: sólidos con alto pf, solubles en agua, conducen electricidad cuando están disueltos o fundidos. En estado sólido NO conducen.'}
     ]
   },
   {
@@ -448,43 +490,43 @@ const MODULES = [
       {context:'🌿 Fotosíntesis: CO₂ + H₂O → C₆H₁₂O₆ + O₂ (sin balancear).',
        text:'¿Cuántos moles de CO₂ se necesitan para producir 1 mol de glucosa?',
        options:['3','6','12','1'],correct:1,
-       feedback:'✅ 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂. Se necesitan 6 mol CO₂ porque la glucosa tiene 6 carbonos. El O₂ producido proviene del H₂O (no del CO₂), como demostró el experimento con ¹⁸O.',
-       wrongFeedback:'❌ La fotosíntesis balanceada: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂. Son 6 mol de CO₂ porque la glucosa tiene 6 átomos de C y cada CO₂ aporta un C.'},
+       feedback:'✅ 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂. Se necesitan 6 mol CO₂ porque la glucosa tiene 6 carbonos.',
+       wrongFeedback:'❌ La fotosíntesis balanceada: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂. Son 6 mol de CO₂ porque la glucosa tiene 6 átomos de C.'},
       {context:'🔥 Combustión del metano (CH₄) en cocinas y calefacciones.',
        text:'¿Cuál es la ecuación BALANCEADA de la combustión completa del CH₄?',
        options:['CH₄ + O₂ → CO₂ + H₂O','CH₄ + 2O₂ → CO₂ + 2H₂O','2CH₄ + O₂ → 2CO + 4H₂','CH₄ + 3O₂ → CO₂ + 2H₂O'],correct:1,
-       feedback:'✅ CH₄ + 2O₂ → CO₂ + 2H₂O. Verificá: C:1=1✓ H:4=4✓ O:4(2O₂)=2(CO₂)+2(2H₂O)=4✓. La combustión incompleta da CO (tóxico), por eso es importante que haya suficiente O₂.',
-       wrongFeedback:'❌ CH₄ + 2O₂ → CO₂ + 2H₂O. Contá átomo por átomo: 1C=1C✓; 4H=4H(en 2H₂O)✓; 4O(2O₂)=2O(CO₂)+2O(2H₂O)=4O✓. El coeficiente del O₂ es 2 porque necesitás oxidar 4H y 1C.'},
+       feedback:'✅ CH₄ + 2O₂ → CO₂ + 2H₂O. Verificá: C:1=1✓ H:4=4✓ O:4=4✓.',
+       wrongFeedback:'❌ CH₄ + 2O₂ → CO₂ + 2H₂O. Contá átomo por átomo: 1C=1C✓; 4H=4H✓; 4O=4O✓.'},
       {context:'🧪 Se mezclan 5 mol de H₂ con 2 mol de O₂. Reacción: 2H₂ + O₂ → 2H₂O.',
        text:'¿Cuál es el reactivo limitante y cuántos moles de H₂O se producen?',
        options:['Limitante H₂ → 5 mol H₂O','Limitante O₂ → 4 mol H₂O','Ambos se consumen juntos → 4 mol H₂O','Limitante O₂ → 2 mol H₂O'],correct:1,
-       feedback:'✅ Para usar 5 mol H₂ necesitarías 2,5 mol O₂, pero hay solo 2 mol O₂ → O₂ es el limitante. Con 2 mol O₂: 2 mol O₂ × (2 mol H₂O / 1 mol O₂) = 4 mol H₂O. Sobra 1 mol de H₂ sin reaccionar.',
-       wrongFeedback:'❌ Calculá qué O₂ necesitas para consumir todo el H₂: 5 mol H₂ × (1 mol O₂/2 mol H₂) = 2,5 mol O₂. Solo hay 2 mol → O₂ es el limitante. Producción: 2 mol O₂ × (2 mol H₂O/1 mol O₂) = 4 mol H₂O.'},
+       feedback:'✅ Para usar 5 mol H₂ necesitarías 2,5 mol O₂, pero hay solo 2 mol O₂ → O₂ es el limitante. Con 2 mol O₂: 4 mol H₂O producidos.',
+       wrongFeedback:'❌ Para consumir todo el H₂ necesitarías 2,5 mol O₂. Solo hay 2 mol → O₂ es el limitante. Producción: 2 mol O₂ × 2 = 4 mol H₂O.'},
       {context:'🌾 Una reacción produce teóricamente 500 g de NH₃ pero se obtienen 400 g.',
        text:'¿Cuál es el rendimiento de la reacción?',
        options:['40%','80%','125%','500%'],correct:1,
-       feedback:'✅ Rendimiento = (masa real / masa teórica) × 100 = (400/500)×100 = 80%. Nunca puede superar el 100%. En la industria, el proceso Haber-Bosch para NH₃ opera con ~15% de rendimiento por pasada pero recicla continuamente los reactivos.',
-       wrongFeedback:'❌ Rendimiento = (obtenido / teórico) × 100 = (400/500) × 100 = 80%. Nunca puede ser >100%. Si obtenés más del teórico, hay un error (trazas de agua u otro compuesto en el producto).'},
+       feedback:'✅ Rendimiento = (masa real / masa teórica) × 100 = (400/500)×100 = 80%. Nunca puede superar el 100%.',
+       wrongFeedback:'❌ Rendimiento = (obtenido / teórico) × 100 = (400/500) × 100 = 80%. Nunca puede ser >100%.'},
       {context:'⚗️ Un reactivo comercial de KNO₃ tiene 90% de pureza. Se pesa 100 g del reactivo comercial.',
        text:'¿Cuántos gramos de KNO₃ puro hay en esa muestra?',
        options:['100 g','90 g','10 g','110 g'],correct:1,
-       feedback:'✅ Masa pura = masa muestra × (% pureza / 100) = 100 g × 0,90 = 90 g de KNO₃ puro. Los 10 g restantes son impurezas. La pureza de los reactivos es fundamental en los cálculos estequiométricos reales.',
-       wrongFeedback:'❌ Masa pura = 100 g × (90/100) = 90 g. El porcentaje de pureza indica qué fracción de la muestra es el reactivo útil. Los 10 g restantes son impurezas que no participan en la reacción.'},
+       feedback:'✅ Masa pura = masa muestra × (% pureza / 100) = 100 g × 0,90 = 90 g de KNO₃ puro.',
+       wrongFeedback:'❌ Masa pura = 100 g × (90/100) = 90 g. El porcentaje de pureza indica qué fracción de la muestra es el reactivo útil.'},
       {context:'🌱 La nitrificación en el suelo: NH₄⁺ + O₂ → NO₃⁻ + H₂O (simplificada).',
        text:'¿Cuál es la afirmación CORRECTA sobre una ecuación química balanceada?',
        options:['Los coeficientes se pueden cambiar libremente sin afectar la ecuación','La ecuación balanceada cumple la Ley de Conservación de la Masa: mismos átomos a ambos lados','Los productos siempre tienen mayor masa que los reactivos','El balanceo solo importa para cálculos, no refleja la realidad'],correct:1,
-       feedback:'✅ La Ley de Conservación de la Masa (Lavoisier) establece que la masa no se crea ni se destruye en una reacción química. El balanceo garantiza que el número de átomos de cada elemento sea igual en reactivos y productos.',
-       wrongFeedback:'❌ El balanceo cumple la Ley de Conservación de la Masa: la cantidad de átomos de cada elemento debe ser igual en reactivos y productos. Los coeficientes estequiométricos NO se pueden cambiar arbitrariamente sin alterar la relación molar.'},
+       feedback:'✅ La Ley de Conservación de la Masa (Lavoisier): la masa no se crea ni se destruye. El balanceo garantiza igual número de átomos a ambos lados.',
+       wrongFeedback:'❌ El balanceo cumple la Ley de Conservación de la Masa: igual cantidad de átomos de cada elemento en reactivos y productos.'},
       {context:'🔬 Se hacen reaccionar 4 g de H₂ con 32 g de O₂. Reacción: 2H₂ + O₂ → 2H₂O.',
        text:'¿Cuántos gramos de H₂O se producen teóricamente? (M: H₂=2, O₂=32, H₂O=18)',
        options:['18 g','36 g','48 g','72 g'],correct:1,
-       feedback:'✅ n(H₂)=4/2=2 mol; n(O₂)=32/32=1 mol. Para 2 mol H₂ necesitamos 1 mol O₂: exacto → se consumen todos. Según estequiometría: 2 mol H₂O producidos → masa = 2×18 = 36 g. La masa se conserva: 4g H₂ + 32g O₂ = 36g H₂O ✓.',
-       wrongFeedback:'❌ n(H₂)=2mol; n(O₂)=1mol. Relación 2H₂:1O₂ → se consumen todos. Se producen 2 mol H₂O → masa = 2×18=36 g. Verificá con conservación de masa: 4+32=36 g ✓. Siempre verificá con la Ley de Conservación.'},
+       feedback:'✅ n(H₂)=2 mol; n(O₂)=1 mol. Relación 2:1 exacta → se consumen todos. Producción: 2 mol H₂O → 2×18 = 36 g. Verificá: 4+32=36 g ✓.',
+       wrongFeedback:'❌ n(H₂)=2mol; n(O₂)=1mol. Se consumen todos. Se producen 2 mol H₂O → 36 g. Verificá con conservación de masa: 4+32=36 g ✓.'},
       {context:'🧮 En estequiometría, el reactivo limitante determina la cantidad máxima de producto.',
        text:'¿Cómo identificás el reactivo limitante en una reacción?',
        options:['Es siempre el reactivo que está en menor cantidad en gramos','Es el reactivo cuya cantidad de moles disponibles produce menor cantidad de producto','Es el reactivo de mayor masa molar','Es el reactivo que aparece primero en la ecuación'],correct:1,
-       feedback:'✅ El reactivo limitante es el que produce MENOR cantidad de producto según la estequiometría de la ecuación. Se determina calculando cuánto producto daría cada reactivo si fuera el limitante, y tomando el menor valor. No es necesariamente el que está en menor cantidad en gramos.',
-       wrongFeedback:'❌ El RL no se determina por gramos sino por moles y estequiometría. Calculás: ¿cuánto producto producirías si cada reactivo fuera el limitante? El que da menor producto es el RL. 2 g de H₂ y 32 g de O₂ no significan que O₂ sea el limitante sin hacer el cálculo.'}
+       feedback:'✅ El reactivo limitante es el que produce MENOR cantidad de producto según la estequiometría. No es necesariamente el que está en menor cantidad en gramos.',
+       wrongFeedback:'❌ El RL no se determina por gramos sino por moles y estequiometría. Calculás cuánto producto daría cada reactivo y el que da menor cantidad es el RL.'}
     ]
   },
   {
@@ -495,88 +537,81 @@ const MODULES = [
       {context:'🔢 El azufre aparece en distintos compuestos con diferentes estados de oxidación.',
        text:'¿Cuál es el número de oxidación del S en el SO₄²⁻ (ion sulfato)?',
        options:['+2','+4','+6','-2'],correct:2,
-       feedback:'✅ En SO₄²⁻: O actúa con −2 (4 átomos = −8). La suma debe ser −2 (carga del ion). S + (−8) = −2 → S = +6. El SO₄²⁻ es la forma más oxidada del azufre y la que absorben las plantas como nutriente.',
-       wrongFeedback:'❌ Regla: en un ion poliatómico, suma de n° de oxidación = carga del ion. En SO₄²⁻: 4×(−2) = −8. S + (−8) = −2 → S = +6. Comenzá siempre por los elementos con n° de oxidación fijo: O es −2, H es +1.'},
+       feedback:'✅ En SO₄²⁻: O actúa con −2 (4 átomos = −8). La suma debe ser −2. S + (−8) = −2 → S = +6.',
+       wrongFeedback:'❌ En SO₄²⁻: 4×(−2) = −8. S + (−8) = −2 → S = +6.'},
       {context:'🌿 El CO₂ es el "alimento" que capturan las plantas del aire en la fotosíntesis.',
        text:'¿Cómo se llama el CO₂ según nomenclatura sistemática (IUPAC)?',
        options:['Monóxido de carbono','Dióxido de carbono','Óxido carbónico','Ácido carbónico'],correct:1,
-       feedback:'✅ CO₂ = dióxido de carbono (nomenclatura sistemática: prefijo "di" = 2 oxígenos). También: óxido de carbono(IV) por nomenclatura de Stock. El CO₂ es un óxido ácido (anhídrido carbónico) porque al disolverse en agua forma H₂CO₃.',
-       wrongFeedback:'❌ CO₂: prefijo "di" = 2 átomos de O → dióxido de carbono. El CO (monóxido de carbono) tiene solo 1 O y es muy tóxico. No confundas CO₂ con H₂CO₃ (ácido carbónico, que se forma al disolver CO₂ en agua).'},
+       feedback:'✅ CO₂ = dióxido de carbono (prefijo "di" = 2 oxígenos). También: óxido de carbono(IV) por Stock.',
+       wrongFeedback:'❌ CO₂: prefijo "di" = 2 átomos de O → dióxido de carbono. El CO es monóxido de carbono (1 O).'},
       {context:'🔬 El Ca(OH)₂ — hidróxido de calcio o "cal apagada" — se usa para encalar suelos ácidos.',
        text:'¿Cuál es la fórmula correcta del hidróxido de aluminio?',
        options:['AlOH','Al(OH)₂','Al(OH)₃','Al₂OH'],correct:2,
-       feedback:'✅ Al tiene n° de oxidación +3. OH⁻ tiene carga −1. Para la fórmula neutra: 3 OH⁻ por cada Al³⁺ → Al(OH)₃. Se usa como antiácido gástrico y en el tratamiento de aguas. Recordá: el n° de oxidación del metal = número de grupos OH.',
-       wrongFeedback:'❌ Al actúa con n° de oxidación +3 (Grupo IIIA). El OH⁻ tiene carga −1. Para neutrilizar +3 necesitás 3 OH⁻ → Al(OH)₃. Regla: el subíndice del OH es igual al n° de oxidación del metal (para metales de n° de oxidación fijo).'},
+       feedback:'✅ Al tiene n° de oxidación +3. OH⁻ tiene carga −1. Para neutralizar: 3 OH⁻ por cada Al³⁺ → Al(OH)₃.',
+       wrongFeedback:'❌ Al actúa con n° de oxidación +3. El OH⁻ tiene carga −1. Para neutrilizar +3 necesitás 3 OH⁻ → Al(OH)₃.'},
       {context:'🧪 El HNO₃ y el H₃PO₄ se usan en la industria de fertilizantes.',
        text:'¿Cómo se llama el H₂SO₄?',
        options:['Ácido sulfuroso','Ácido sulfhídrico','Ácido sulfúrico','Sulfato de hidrógeno'],correct:2,
-       feedback:'✅ H₂SO₄ = ácido sulfúrico. El más producido industrialmente. Se usa para fabricar superfosfatos: Ca₃(PO₄)₂ + H₂SO₄ → Ca(H₂PO₄)₂ + CaSO₄. Regla: cuando el no metal está en su n° de oxidación más alto → sufijo "-úrico".',
-       wrongFeedback:'❌ H₂SO₄ = ácido sulfúrico (S con n° de oxidación +6, el más alto). H₂SO₃ = ácido sulfuroso (S con +4). H₂S = ácido sulfhídrico (sin O, S con −2). El sufijo "-úrico" corresponde al n° de oxidación más alto del no metal.'},
+       feedback:'✅ H₂SO₄ = ácido sulfúrico (S con n° de oxidación +6, el más alto). Se usa para fabricar superfosfatos.',
+       wrongFeedback:'❌ H₂SO₄ = ácido sulfúrico (S con +6). H₂SO₃ = ácido sulfuroso (S con +4). H₂S = ácido sulfhídrico.'},
       {context:'🌱 Los óxidos básicos reaccionan con agua para formar hidróxidos (bases).',
        text:'¿Cuál es la fórmula del óxido de calcio (CaO) y cómo reacciona con el agua?',
-       options:['CaO + H₂O → CaOH (hidróxido sin balancear)','CaO + H₂O → Ca(OH)₂ (hidróxido de calcio o "cal apagada")','CaO + H₂O → CaCO₃ (carbonato de calcio)','CaO + H₂O → CaO₂ (peróxido)'],correct:1,
-       feedback:'✅ CaO + H₂O → Ca(OH)₂. El CaO (cal viva) reacciona vigorosamente con agua produciendo Ca(OH)₂ (cal apagada o hidratada). Esta reacción es muy exotérmica. El Ca(OH)₂ se usa para encalar suelos y ajustar el pH.',
-       wrongFeedback:'❌ CaO + H₂O → Ca(OH)₂. Los óxidos básicos (de metales) reaccionan con agua para dar hidróxidos (bases). La cal viva (CaO) se convierte en cal apagada (Ca(OH)₂). Esta reacción de encalado es fundamental en agronomía para corregir acidez del suelo.'},
+       options:['CaO + H₂O → CaOH','CaO + H₂O → Ca(OH)₂ (hidróxido de calcio o "cal apagada")','CaO + H₂O → CaCO₃','CaO + H₂O → CaO₂'],correct:1,
+       feedback:'✅ CaO + H₂O → Ca(OH)₂. La cal viva reacciona con agua produciendo cal apagada. Reacción muy exotérmica. Se usa para encalar suelos.',
+       wrongFeedback:'❌ CaO + H₂O → Ca(OH)₂. Los óxidos básicos reaccionan con agua para dar hidróxidos.'},
       {context:'⚡ El ácido nítrico (HNO₃) y el ácido nitroso (HNO₂) son dos oxácidos del nitrógeno.',
        text:'¿Cuál es el número de oxidación del N en el HNO₃?',
        options:['+1','+3','+5','+7'],correct:2,
-       feedback:'✅ En HNO₃: H = +1, O = −2 (3 átomos = −6). Suma total = 0: +1 + N + (−6) = 0 → N = +5. En HNO₂ el N tiene +3. El N con n° de oxidación +5 está en su estado más oxidado (máximo para el N).',
-       wrongFeedback:'❌ En HNO₃: H(+1) + N(?) + 3×O(−2) = 0. Entonces: +1 + N − 6 = 0 → N = +5. El ácido nítrico tiene el N en su estado de oxidación más alto (+5). El ácido nitroso (HNO₂) tiene N con +3.'},
+       feedback:'✅ En HNO₃: +1 + N + 3×(−2) = 0 → N = +5. El N en su estado más oxidado.',
+       wrongFeedback:'❌ En HNO₃: H(+1) + N + 3×O(−2) = 0. Entonces: +1 + N − 6 = 0 → N = +5.'},
       {context:'🧂 El cloruro de sodio (NaCl) es la sal de cocina. Es una sal neutra.',
        text:'¿Qué nombre y fórmula corresponde a la sal ácida del H₃PO₄ con sodio?',
-       options:['Fosfato de sodio: Na₃PO₄','Fosfato ácido de sodio (ortofosfato disódico): Na₂HPO₄','Carbonato de sodio: Na₂CO₃','Nitrato de sodio: NaNO₃'],correct:1,
-       feedback:'✅ El H₃PO₄ tiene 3 H ácidos. En Na₂HPO₄, 2 H fueron reemplazados por Na y queda 1 H → es una sal ácida (fosfato ácido de sodio o dihidrogenofosfato de sodio según el H restante). En Na₃PO₄ se reemplazaron los 3 H → sal neutra.',
-       wrongFeedback:'❌ Las sales ácidas tienen H ácidos sin reemplazar. H₃PO₄ tiene 3 H: si reemplazás 2 por Na → Na₂HPO₄ (sal ácida, queda 1 H). Si reemplazás los 3 → Na₃PO₄ (sal neutra). Las otras opciones son sales de ácidos diferentes.'},
+       options:['Fosfato de sodio: Na₃PO₄','Fosfato ácido de sodio: Na₂HPO₄','Carbonato de sodio: Na₂CO₃','Nitrato de sodio: NaNO₃'],correct:1,
+       feedback:'✅ H₃PO₄ tiene 3 H ácidos. En Na₂HPO₄, 2 H fueron reemplazados por Na y queda 1 H → sal ácida.',
+       wrongFeedback:'❌ Las sales ácidas tienen H ácidos sin reemplazar. H₃PO₄: si reemplazás 2 H por Na → Na₂HPO₄ (sal ácida). Si reemplazás los 3 → Na₃PO₄ (sal neutra).'},
       {context:'🏭 El proceso industrial de síntesis de amoníaco usa hierro como catalizador.',
        text:'¿Cuál es la fórmula del sulfato de hierro (III)?',
        options:['FeSO₄','Fe₂(SO₄)₃','Fe₂SO₄','Fe(SO₄)₂'],correct:1,
-       feedback:'✅ Fe(III) = Fe³⁺, SO₄²⁻. Para la fórmula neutra: la carga total positiva debe igualar la negativa. MCM(3,2)=6 → 2Fe³⁺ (+6) y 3SO₄²⁻ (−6) → Fe₂(SO₄)₃. Siempre usá el método del mínimo común múltiplo para las valencias cruzadas.',
-       wrongFeedback:'❌ Fe(III) = Fe³⁺. SO₄ = SO₄²⁻. Para neutralizar: necesitás que la suma de cargas sea 0. Método de cruza de valencias: 2×Fe³⁺ (+6) con 3×SO₄²⁻ (−6) = neutro → Fe₂(SO₄)₃. FeSO₄ es sulfato de hierro(II).'}
+       feedback:'✅ Fe(III) = Fe³⁺, SO₄²⁻. MCM(3,2)=6 → 2Fe³⁺ y 3SO₄²⁻ → Fe₂(SO₄)₃.',
+       wrongFeedback:'❌ Fe(III) = Fe³⁺. SO₄ = SO₄²⁻. 2×Fe³⁺(+6) con 3×SO₄²⁻(−6) = neutro → Fe₂(SO₄)₃. FeSO₄ es sulfato de hierro(II).'}
     ]
   }
 ];
 
-// POOL COMPLETO para el simulacro (se mezclan aleatoriamente y se toman 20)
 const EXAM_POOL = [];
 MODULES.forEach(m => m.questions.forEach(q => EXAM_POOL.push({...q, unit: m.unit, moduleId: m.id})));
 
 const ELEMENTS = [
   {symbol:'H',name:'Hidrógeno',num:1,mass:'1,008',group:'No metal',accent:'#3B82F6',fact:'El más abundante del universo. El H⁺ determina el pH del suelo, que controla la disponibilidad de todos los nutrientes. El pH ácido (H⁺ alto) limita la disponibilidad de P, Ca, Mg, y favorece Al³⁺ y Mn²⁺ tóxicos para las plantas.'},
   {symbol:'C',name:'Carbono',num:6,mass:'12,011',group:'No metal',accent:'#6B7280',fact:'Base de toda la materia orgánica del suelo. El carbono orgánico (%) indica fertilidad: >3% es muy bueno. El CO₂ es el "alimento" de la fotosíntesis. La urea CO(NH₂)₂ es el fertilizante N más concentrado: 46,7% de N.'},
-  {symbol:'N',name:'Nitrógeno',num:7,mass:'14,007',group:'No metal',accent:'#00C896',fact:'Macronutriente primario (NPK). Forma parte de proteínas, clorofila, ADN. El 78% del aire es N₂ pero las plantas absorben NH₄⁺ y NO₃⁻. Las bacterias Rhizobium en raíces de leguminosas fijan N₂ atmosférico mediante la enzima nitrogenasa (que requiere Mo).'},
-  {symbol:'O',name:'Oxígeno',num:8,mass:'15,999',group:'No metal',accent:'#EF4444',fact:'21% del aire. La respiración de raíces requiere O₂ en el suelo (aireación). El O₂ del agua en la fotosíntesis proviene del H₂O (no del CO₂). El exceso de agua compacta el suelo y genera condiciones anaeróbicas que dañan las raíces.'},
-  {symbol:'Na',name:'Sodio',num:11,mass:'22,990',group:'Metal alcalino',accent:'#F59E0B',fact:'El exceso de Na⁺ en suelos (suelos sódicos) dispersa las arcillas, destruye la estructura y genera problemas de permeabilidad. El yeso agrícola (CaSO₄·2H₂O) reemplaza Na⁺ por Ca²⁺ en el complejo de intercambio. pH de suelos sódicos >8,5.'},
-  {symbol:'Mg',name:'Magnesio',num:12,mass:'24,305',group:'Metal alcalino-térreo',accent:'#10B981',fact:'Átomo central de la clorofila C₅₅H₇₂MgN₄O₅. Sin Mg²⁺ no hay fotosíntesis. Deficiencia → clorosis intervenal (hojas amarillas con nervaduras verdes). La dolomita CaMg(CO₃)₂ aporta Mg y Ca y además corrige acidez.'},
-  {symbol:'P',name:'Fósforo',num:15,mass:'30,974',group:'No metal',accent:'#8B5CF6',fact:'Macronutriente primario. Parte del ATP, ADN y membranas. Plantas absorben H₂PO₄⁻ (pH ácido) y HPO₄²⁻ (pH neutro-alcalino). El superfosfato simple Ca(H₂PO₄)₂ se produce: Ca₃(PO₄)₂ + H₂SO₄. La roca fosfórica es un recurso no renovable.'},
-  {symbol:'S',name:'Azufre',num:16,mass:'32,06',group:'No metal',accent:'#EAB308',fact:'Macronutriente secundario. Parte de aminoácidos cisteína y metionina. Plantas absorben SO₄²⁻. El sulfato de amonio (NH₄)₂SO₄ aporta N y S. El caldo bordelés (CuSO₄ + Ca(OH)₂) es fungicida clásico de la viticultura.'},
-  {symbol:'K',name:'Potasio',num:19,mass:'39,098',group:'Metal alcalino',accent:'#EC4899',fact:'Macronutriente primario (NPK). K⁺ regula apertura de estomas, síntesis de proteínas y resistencia a sequía. KCl (cloruro de potasio) y K₂SO₄ son los fertilizantes más usados. Suelos arenosos son naturalmente deficientes en K.'},
-  {symbol:'Ca',name:'Calcio',num:20,mass:'40,078',group:'Metal alcalino-térreo',accent:'#64748B',fact:'Macronutriente secundario. Refuerza las paredes celulares vegetales (pectatos de calcio). El encalado con CaCO₃ o Ca(OH)₂ neutraliza la acidez del suelo: CaCO₃ + 2H⁺ → Ca²⁺ + H₂O + CO₂. Esencial para pH>6 donde P, Ca, Mg son más disponibles.'},
-  {symbol:'Fe',name:'Hierro',num:26,mass:'55,845',group:'Metal de transición',accent:'#B45309',fact:'Micronutriente. Cofactor de enzimas en fotosíntesis y respiración celular. En suelos alcalinos (pH>7), Fe³⁺ precipita como Fe(OH)₃ y es insoluble → clorosis férrica. Se corrige con quelato de Fe (FeEDTA) o acidificando el suelo.'},
-  {symbol:'Cu',name:'Cobre',num:29,mass:'63,546',group:'Metal de transición',accent:'#D97706',fact:'Micronutriente. El CuSO₄·5H₂O (sulfato de cobre azul) + Ca(OH)₂ (cal apagada) = caldo bordelés. Reacción: CuSO₄ + Ca(OH)₂ → Cu(OH)₂ + CaSO₄. Fungicida histórico de la viticultura. Exceso tóxico para lombrices y microbiota del suelo.'},
-  {symbol:'Zn',name:'Zinc',num:30,mass:'65,38',group:'Metal de transición',accent:'#6B7280',fact:'Micronutriente. Necesario para síntesis de auxinas (IAA, hormona de crecimiento). Deficiencia → entrenudos cortos y hojas pequeñas. Suelos con pH>6,5 inmoviliza Zn²⁺. El ZnSO₄ es el fertilizante usado para corregir la deficiencia de zinc.'},
-  {symbol:'Mo',name:'Molibdeno',num:42,mass:'95,95',group:'Metal de transición',accent:'#7C3AED',fact:'Micronutriente clave para fijación biológica de N₂: la nitrogenasa (enzima en Rhizobium) requiere Mo. También necesario para la reductasa de nitrato que convierte NO₃⁻ en NH₄⁺ dentro de la planta. Deficiencia crítica en leguminosas. El molibdato de amonio corrige la deficiencia.'}
+  {symbol:'N',name:'Nitrógeno',num:7,mass:'14,007',group:'No metal',accent:'#00C896',fact:'Macronutriente primario (NPK). Forma parte de proteínas, clorofila, ADN. El 78% del aire es N₂ pero las plantas absorben NH₄⁺ y NO₃⁻. Las bacterias Rhizobium en raíces de leguminosas fijan N₂ atmosférico.'},
+  {symbol:'O',name:'Oxígeno',num:8,mass:'15,999',group:'No metal',accent:'#EF4444',fact:'21% del aire. La respiración de raíces requiere O₂ en el suelo (aireación). El O₂ del agua en la fotosíntesis proviene del H₂O (no del CO₂). El exceso de agua genera condiciones anaeróbicas que dañan las raíces.'},
+  {symbol:'Na',name:'Sodio',num:11,mass:'22,990',group:'Metal alcalino',accent:'#F59E0B',fact:'El exceso de Na⁺ en suelos (suelos sódicos) dispersa las arcillas y destruye la estructura. El yeso agrícola (CaSO₄·2H₂O) reemplaza Na⁺ por Ca²⁺ en el complejo de intercambio. pH de suelos sódicos >8,5.'},
+  {symbol:'Mg',name:'Magnesio',num:12,mass:'24,305',group:'Metal alcalino-térreo',accent:'#10B981',fact:'Átomo central de la clorofila C₅₅H₇₂MgN₄O₅. Sin Mg²⁺ no hay fotosíntesis. Deficiencia → clorosis intervenal (hojas amarillas con nervaduras verdes). La dolomita CaMg(CO₃)₂ aporta Mg y Ca.'},
+  {symbol:'P',name:'Fósforo',num:15,mass:'30,974',group:'No metal',accent:'#8B5CF6',fact:'Macronutriente primario. Parte del ATP, ADN y membranas. Plantas absorben H₂PO₄⁻ (pH ácido) y HPO₄²⁻ (pH neutro). El superfosfato simple Ca(H₂PO₄)₂: Ca₃(PO₄)₂ + H₂SO₄. La roca fosfórica es un recurso no renovable.'},
+  {symbol:'S',name:'Azufre',num:16,mass:'32,06',group:'No metal',accent:'#EAB308',fact:'Macronutriente secundario. Parte de aminoácidos cisteína y metionina. Plantas absorben SO₄²⁻. El sulfato de amonio (NH₄)₂SO₄ aporta N y S. El caldo bordelés (CuSO₄ + Ca(OH)₂) es fungicida clásico.'},
+  {symbol:'K',name:'Potasio',num:19,mass:'39,098',group:'Metal alcalino',accent:'#EC4899',fact:'Macronutriente primario (NPK). K⁺ regula apertura de estomas, síntesis de proteínas y resistencia a sequía. KCl y K₂SO₄ son los fertilizantes más usados. Suelos arenosos son naturalmente deficientes en K.'},
+  {symbol:'Ca',name:'Calcio',num:20,mass:'40,078',group:'Metal alcalino-térreo',accent:'#64748B',fact:'Macronutriente secundario. Refuerza las paredes celulares (pectatos de calcio). El encalado con CaCO₃ o Ca(OH)₂ neutraliza la acidez: CaCO₃ + 2H⁺ → Ca²⁺ + H₂O + CO₂.'},
+  {symbol:'Fe',name:'Hierro',num:26,mass:'55,845',group:'Metal de transición',accent:'#B45309',fact:'Micronutriente. Cofactor de enzimas en fotosíntesis y respiración. En suelos alcalinos (pH>7), Fe³⁺ precipita como Fe(OH)₃ → clorosis férrica. Se corrige con quelato de Fe (FeEDTA).'},
+  {symbol:'Cu',name:'Cobre',num:29,mass:'63,546',group:'Metal de transición',accent:'#D97706',fact:'Micronutriente. CuSO₄·5H₂O + Ca(OH)₂ = caldo bordelés. Reacción: CuSO₄ + Ca(OH)₂ → Cu(OH)₂ + CaSO₄. Fungicida histórico de la viticultura. Exceso tóxico para lombrices.'},
+  {symbol:'Zn',name:'Zinc',num:30,mass:'65,38',group:'Metal de transición',accent:'#6B7280',fact:'Micronutriente. Necesario para síntesis de auxinas (IAA). Deficiencia → entrenudos cortos y hojas pequeñas. Suelos con pH>6,5 inmoviliza Zn²⁺. El ZnSO₄ corrige la deficiencia.'},
+  {symbol:'Mo',name:'Molibdeno',num:42,mass:'95,95',group:'Metal de transición',accent:'#7C3AED',fact:'Micronutriente clave para fijación biológica de N₂: la nitrogenasa (en Rhizobium) requiere Mo. También necesario para la reductasa de nitrato. Deficiencia crítica en leguminosas.'}
 ];
 
-// ======================================================
-// ESTADO GLOBAL
-// ======================================================
 let state = JSON.parse(localStorage.getItem('agroquimapp_v2') || 'null') || {
   xp:0, quizzes:0, correct:0, streak:0, badges:[], completedModules:[], exams:0, bestScore:null,
   unitStats:{}, examHistory:[], sessionDates:[]
 };
 
 let currentModule=null, currentQ=0, answered=false, sessionCorrect=0;
-
-// Estado del examen
 let examQuestions=[], examAnswers={}, examCurrent=0, examTimer=null, examTimeLeft=3600, examStarted=false;
 
 function init(){
-  // Registrar sesión del día
   const today = new Date().toISOString().split('T')[0];
   if(!state.sessionDates) state.sessionDates=[];
   if(state.sessionDates[state.sessionDates.length-1] !== today){
     state.sessionDates.push(today);
-    if(state.sessionDates.length > 90) state.sessionDates.shift(); // max 90 días
+    if(state.sessionDates.length > 90) state.sessionDates.shift();
     saveState();
   }
   renderParticles();
@@ -588,9 +623,6 @@ function init(){
 }
 function saveState(){localStorage.setItem('agroquimapp_v2', JSON.stringify(state));}
 
-// ======================================================
-// PARTÍCULAS
-// ======================================================
 function renderParticles(){
   const canvas=document.getElementById('particles');
   const ctx=canvas.getContext('2d');
@@ -617,9 +649,6 @@ function renderParticles(){
   })();
 }
 
-// ======================================================
-// NAVEGACIÓN
-// ======================================================
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-pill').forEach(p=>p.classList.remove('active'));
@@ -628,11 +657,13 @@ function showScreen(name){
   document.querySelectorAll('.nav-pill').forEach(p=>{
     if(p.textContent.toLowerCase().includes(map[name]||'xxxxxxxxx')) p.classList.add('active');
   });
+  // Sincronizar bottom-nav
+  ['home','explorer','stats'].forEach(id=>{
+    const btn=document.getElementById('bn-'+id);
+    if(btn) btn.className='bn-item'+(name===id?' active':'');
+  });
 }
 
-// ======================================================
-// MÓDULOS
-// ======================================================
 function unlockPercent(){
   if(MODULES.length===0)return 0;
   const done=state.completedModules.filter(id=>MODULES.find(m=>m.id===id)).length;
@@ -656,19 +687,13 @@ function renderExamCard(){
   const pct=unlockPercent();
   const unlocked=isExamUnlocked();
   const container=document.getElementById('exam-card-container');
-
-  // SVG ring
   const radius=42, circ=2*Math.PI*radius;
   const fill=circ*(1-pct/100);
-
   container.innerHTML=`
     <div class="exam-card ${unlocked?'':'locked'}">
       <div class="exam-title">🎓 Simulacro de Ingreso — Química Agronomía</div>
       ${!unlocked?`
-        <div class="exam-lock-msg">
-          🔒 <strong>Examen bloqueado.</strong> Completá al menos el <strong>70% de los módulos</strong> para habilitarlo.<br>
-          Desbloqueá el examen final completando los módulos.
-        </div>
+        <div class="exam-lock-msg">🔒 <strong>Examen bloqueado.</strong> Completá al menos el <strong>70% de los módulos</strong> para habilitarlo.</div>
         <div class="progress-ring-wrap">
           <svg width="110" height="110" viewBox="0 0 110 110">
             <circle cx="55" cy="55" r="${radius}" stroke="var(--borde)" stroke-width="9" fill="none"/>
@@ -676,13 +701,8 @@ function renderExamCard(){
               stroke-dasharray="${circ}" stroke-dashoffset="${fill}" stroke-linecap="round" style="transition:stroke-dashoffset .6s"/>
           </svg>
           <div class="progress-ring-label">${pct}%</div>
-        </div>
-      `:`
-        <div class="exam-desc">
-          Ponete a prueba con 20 preguntas seleccionadas al azar de las 6 unidades del ingreso. 
-          Reproducís las condiciones del examen real: tiempo limitado, sin retroalimentación inmediata.
-        </div>
-      `}
+        </div>`:`
+        <div class="exam-desc">Ponete a prueba con 20 preguntas seleccionadas al azar de las 6 unidades. Tiempo limitado, sin retroalimentación inmediata.</div>`}
       <div class="exam-specs">
         <span class="exam-spec">⏱️ 60 minutos</span>
         <span class="exam-spec">📋 20 preguntas</span>
@@ -690,14 +710,11 @@ function renderExamCard(){
         <span class="exam-spec">📊 Resultado detallado</span>
       </div>
       ${unlocked?`<button class="btn-primary" onclick="startExam()" style="font-size:1rem;padding:13px 28px;">🚀 Comenzar examen</button>`
-        :`<button class="btn-secondary" disabled style="opacity:.4;cursor:not-allowed;">🔒 Bloqueado (${pct}% de ${70}% requerido)</button>`}
+        :`<button class="btn-secondary" disabled style="opacity:.4;cursor:not-allowed;">🔒 Bloqueado (${pct}% de 70% requerido)</button>`}
       ${state.bestScore!==null?`<div style="margin-top:12px;font-size:.8rem;color:var(--verde);">🏆 Mejor puntaje anterior: ${state.bestScore}%</div>`:''}
     </div>`;
 }
 
-// ======================================================
-// QUIZ MÓDULO
-// ======================================================
 function startQuiz(id){
   currentModule=MODULES.find(m=>m.id===id);
   currentQ=0; sessionCorrect=0;
@@ -742,7 +759,6 @@ function selectAnswer(idx){
   fb.className='feedback-box show '+(isC?'correct':'wrong');
   fb.innerHTML=isC?q.feedback:q.wrongFeedback;
   document.getElementById('next-btn').classList.add('show');
-  // Registrar por unidad
   if(!state.unitStats) state.unitStats={};
   const uid = currentModule.id;
   if(!state.unitStats[uid]) state.unitStats[uid]={attempted:0,correct:0,incorrect:0};
@@ -785,29 +801,19 @@ function showModuleResult(){
     </div>`;
 }
 
-// ======================================================
-// SIMULACRO DE EXAMEN
-// ======================================================
 function shuffle(arr){return arr.sort(()=>Math.random()-.5);}
 
 function startExam(){
   if(!isExamUnlocked()){showToast('🔒 Completá más módulos para desbloquear el examen');return;}
   examQuestions=shuffle([...EXAM_POOL]).slice(0,20);
-  examAnswers={};
-  examCurrent=0;
-  examTimeLeft=3600;
-  examStarted=true;
-  showScreen('exam');
-  renderExamQuestion();
-  renderQNavigator();
-  startExamTimer();
+  examAnswers={};examCurrent=0;examTimeLeft=3600;examStarted=true;
+  showScreen('exam');renderExamQuestion();renderQNavigator();startExamTimer();
 }
 
 function startExamTimer(){
   clearInterval(examTimer);
   examTimer=setInterval(()=>{
-    examTimeLeft--;
-    updateTimerDisplay();
+    examTimeLeft--;updateTimerDisplay();
     if(examTimeLeft<=0){clearInterval(examTimer);finishExam();}
   },1000);
 }
@@ -816,10 +822,7 @@ function updateTimerDisplay(){
   const m=Math.floor(examTimeLeft/60).toString().padStart(2,'0');
   const s=(examTimeLeft%60).toString().padStart(2,'0');
   const el=document.getElementById('exam-timer');
-  if(el){
-    el.textContent=m+':'+s;
-    el.className='exam-timer'+(examTimeLeft<=300?' urgent':'');
-  }
+  if(el){el.textContent=m+':'+s;el.className='exam-timer'+(examTimeLeft<=300?' urgent':'');}
 }
 
 function renderExamQuestion(){
@@ -835,29 +838,20 @@ function renderExamQuestion(){
       <div class="q-text">${q.text}</div>
       <div class="options-grid">
         ${q.options.map((opt,i)=>`
-          <button class="option-btn ${answered_idx===i?'correct':''}" 
+          <button class="option-btn ${answered_idx===i?'correct':''}"
             id="eopt-${i}" onclick="examSelectAnswer(${i})"
             ${answered_idx!==undefined&&answered_idx!==i?'style="opacity:.55"':''}>
             <span class="option-letter">${letters[i]}</span>${opt}
           </button>`).join('')}
       </div>
     </div>`;
-  // botones nav
   document.getElementById('exam-prev-btn').disabled=examCurrent===0;
   document.getElementById('exam-next-btn').disabled=examCurrent===total-1;
   renderQNavigator();
 }
 
-function examSelectAnswer(idx){
-  examAnswers[examCurrent]=idx;
-  renderExamQuestion();
-  renderQNavigator();
-}
-
-function examNav(dir){
-  const newQ=examCurrent+dir;
-  if(newQ>=0&&newQ<examQuestions.length){examCurrent=newQ;renderExamQuestion();}
-}
+function examSelectAnswer(idx){examAnswers[examCurrent]=idx;renderExamQuestion();renderQNavigator();}
+function examNav(dir){const newQ=examCurrent+dir;if(newQ>=0&&newQ<examQuestions.length){examCurrent=newQ;renderExamQuestion();}}
 
 function renderQNavigator(){
   const nav=document.getElementById('q-navigator');
@@ -868,52 +862,31 @@ function renderQNavigator(){
 }
 
 function confirmFinish(){
-  const answered=Object.keys(examAnswers).length;
+  const ans=Object.keys(examAnswers).length;
   const total=examQuestions.length;
-  const unanswered=total-answered;
-  if(unanswered>0){
-    if(!confirm(`Tenés ${unanswered} pregunta(s) sin responder. ¿Seguro que querés finalizar?`))return;
-  }
+  const unanswered=total-ans;
+  if(unanswered>0){if(!confirm(`Tenés ${unanswered} pregunta(s) sin responder. ¿Seguro que querés finalizar?`))return;}
   finishExam();
 }
 
 function finishExam(){
-  clearInterval(examTimer);
-  examStarted=false;
-
-  // Calcular resultados
+  clearInterval(examTimer);examStarted=false;
   let correct=0;
   const results=examQuestions.map((q,i)=>{
-    const chosen=examAnswers[i];
-    const isC=chosen===q.correct;
-    if(isC)correct++;
-    return{q,chosen,isC};
+    const chosen=examAnswers[i];const isC=chosen===q.correct;if(isC)correct++;return{q,chosen,isC};
   });
-
   const pct=Math.round(correct/examQuestions.length*100);
   state.exams++;
   if(state.bestScore===null||pct>state.bestScore)state.bestScore=pct;
-  // Historial de simulacros
-  if(!state.examHistory) state.examHistory=[];
-  const timeUsed = 3600 - examTimeLeft;
-  state.examHistory.push({
-    date: new Date().toISOString().split('T')[0],
-    score: pct,
-    correct: correct,
-    total: examQuestions.length,
-    timeUsed: timeUsed
-  });
-  if(state.examHistory.length > 20) state.examHistory.shift(); // max 20
-  if(pct>=60)addXP(100);
-  else addXP(40);
+  if(!state.examHistory)state.examHistory=[];
+  state.examHistory.push({date:new Date().toISOString().split('T')[0],score:pct,correct,total:examQuestions.length,timeUsed:3600-examTimeLeft});
+  if(state.examHistory.length>20)state.examHistory.shift();
+  if(pct>=60)addXP(100);else addXP(40);
   checkBadges();saveState();updateStats();
-
-  // Mostrar resultado
   const [emoji,msg,color]=pct>=80?['🏆','¡Excelente! Estás muy bien preparado/a para el ingreso.','var(--verde)']:
     pct>=60?['💪','Aprobás. Hay temas para repasar antes del examen real.','var(--amarillo)']:
     pct>=40?['🤔','Por debajo del umbral. Repasá los módulos antes de reintentar.','var(--naranja)']:
     ['😅','Necesitás más práctica. Volvé a los módulos y practicá cada unidad.','var(--naranja)'];
-
   showScreen('exam-result');
   document.getElementById('exam-result-content').innerHTML=`
     <div class="score-summary">
@@ -940,15 +913,10 @@ function renderReviewItem({q,chosen,isC},i){
       ${chosen!==undefined?`Tu respuesta: <strong>${letters[chosen]}. ${q.options[chosen]}</strong><br>`:'<em>Sin responder</em><br>'}
       Respuesta correcta: <strong style="color:var(--verde)">${letters[q.correct]}. ${q.options[q.correct]}</strong>
     </div>
-    <div class="review-explanation ${isC?'':'wrong-exp'}">
-      ${isC?q.feedback:q.wrongFeedback}
-    </div>
+    <div class="review-explanation ${isC?'':'wrong-exp'}">${isC?q.feedback:q.wrongFeedback}</div>
   </div>`;
 }
 
-// ======================================================
-// EXPLORADOR
-// ======================================================
 function renderElements(){
   document.getElementById('elements-grid').innerHTML=ELEMENTS.map(e=>`
     <div class="element-card" style="--accent:${e.accent}" onclick="showElement('${e.symbol}')">
@@ -960,8 +928,7 @@ function renderElements(){
 }
 
 function showElement(sym){
-  const el=ELEMENTS.find(e=>e.symbol===sym);
-  if(!el)return;
+  const el=ELEMENTS.find(e=>e.symbol===sym);if(!el)return;
   const d=document.getElementById('element-detail');
   d.className='element-detail show';
   d.innerHTML=`
@@ -978,20 +945,14 @@ function showElement(sym){
 
 function filterElements(){
   const q=document.getElementById('element-search').value.toLowerCase();
-  document.querySelectorAll('.element-card').forEach(c=>{
-    c.style.display=c.textContent.toLowerCase().includes(q)?'':'none';
-  });
+  document.querySelectorAll('.element-card').forEach(c=>{c.style.display=c.textContent.toLowerCase().includes(q)?'':'none';});
 }
 
-// ======================================================
-// XP Y BADGES
-// ======================================================
 function addXP(n){state.xp+=n;updateXP();}
 function updateXP(){document.getElementById('xp-display').textContent=state.xp;}
 function updateStats(){
   ['xp','quizzes','correct','streak','exams'].forEach(k=>{
-    const el=document.getElementById('stat-'+k);
-    if(el)el.textContent=state[k];
+    const el=document.getElementById('stat-'+k);if(el)el.textContent=state[k];
   });
   const best=document.getElementById('stat-best');
   if(best)best.textContent=state.bestScore!==null?state.bestScore+'%':'—';
@@ -999,23 +960,22 @@ function updateStats(){
 }
 
 const ALL_BADGES=[
-  {id:'first',     label:'🥇 Primera correcta',    cond:s=>s.correct>=1},
-  {id:'streak5',   label:'🔥 Racha de 5',           cond:s=>s.streak>=5},
-  {id:'xp100',     label:'⭐ 100 XP',               cond:s=>s.xp>=100},
-  {id:'quiz3',     label:'🎯 3 módulos completos',  cond:s=>s.quizzes>=3},
-  {id:'allunits',  label:'🏆 6 unidades completas', cond:s=>s.completedModules.length>=MODULES.length},
-  {id:'correct30', label:'💎 30 respuestas bien',   cond:s=>s.correct>=30},
-  {id:'xp300',     label:'🚀 300 XP',               cond:s=>s.xp>=300},
-  {id:'firstexam', label:'📝 Primer simulacro',     cond:s=>s.exams>=1},
-  {id:'pass60',    label:'🎓 Aprobaste 60%+',       cond:s=>s.bestScore!==null&&s.bestScore>=60},
-  {id:'pass80',    label:'🌟 80%+ en simulacro',    cond:s=>s.bestScore!==null&&s.bestScore>=80}
+  {id:'first',label:'🥇 Primera correcta',cond:s=>s.correct>=1},
+  {id:'streak5',label:'🔥 Racha de 5',cond:s=>s.streak>=5},
+  {id:'xp100',label:'⭐ 100 XP',cond:s=>s.xp>=100},
+  {id:'quiz3',label:'🎯 3 módulos completos',cond:s=>s.quizzes>=3},
+  {id:'allunits',label:'🏆 6 unidades completas',cond:s=>s.completedModules.length>=MODULES.length},
+  {id:'correct30',label:'💎 30 respuestas bien',cond:s=>s.correct>=30},
+  {id:'xp300',label:'🚀 300 XP',cond:s=>s.xp>=300},
+  {id:'firstexam',label:'📝 Primer simulacro',cond:s=>s.exams>=1},
+  {id:'pass60',label:'🎓 Aprobaste 60%+',cond:s=>s.bestScore!==null&&s.bestScore>=60},
+  {id:'pass80',label:'🌟 80%+ en simulacro',cond:s=>s.bestScore!==null&&s.bestScore>=80}
 ];
 
 function checkBadges(){
   ALL_BADGES.forEach(b=>{
     if(!state.badges.includes(b.id)&&b.cond(state)){
-      state.badges.push(b.id);
-      showToast('🏅 Logro: '+b.label+'!');
+      state.badges.push(b.id);showToast('🏅 Logro: '+b.label+'!');
     }
   });
 }
@@ -1025,18 +985,25 @@ function renderBadges(){
     <span class="badge ${state.badges.includes(b.id)?'earned':'locked'}">${b.label}</span>`).join('');
 }
 
-// ======================================================
-// TOAST
-// ======================================================
 let toastT;
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastT);
-  toastT=setTimeout(()=>t.classList.remove('show'),2800);
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
 init();
 </script>
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bn-item active" id="bn-home" onclick="showScreen('home')">
+    <span class="bn-icon">🏠</span>Inicio
+  </button>
+  <button class="bn-item" id="bn-explorer" onclick="showScreen('explorer')">
+    <span class="bn-icon">🔭</span>Elementos
+  </button>
+  <button class="bn-item" id="bn-stats" onclick="showScreen('stats')">
+    <span class="bn-icon">📊</span>Progreso
+  </button>
+</nav>
 </body>
 </html>
