@@ -191,9 +191,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(15,15,26,0.92);backdrop-fi
     transition:color .2s;border:none;background:transparent;
     font-family:'Nunito',sans-serif;
     touch-action:manipulation;
-    -webkit-tap-highlight-color:rgba(0,200,150,.15);
-    user-select:none;
-    -webkit-user-select:none;
+    -webkit-tap-highlight-color:rgba(0,200,150,.2);
+    user-select:none;-webkit-user-select:none;
   }
   .bn-item.active,.bn-item:hover{color:var(--verde);}
   .bn-icon{font-size:1.35rem;line-height:1;}
@@ -998,34 +997,26 @@ function showToast(msg){
 
 init();
 
-// Bottom-nav: listeners táctiles explícitos para móvil
+// Bottom-nav táctil explícito
 (function(){
-  const map = {
-    'bn-home': 'home',
-    'bn-explorer': 'explorer',
-    'bn-stats': 'stats'
-  };
+  var map={'bn-home':'home','bn-explorer':'explorer','bn-stats':'stats'};
   Object.keys(map).forEach(function(id){
-    const btn = document.getElementById(id);
-    if(!btn) return;
-    function go(e){
-      e.preventDefault();
-      e.stopPropagation();
-      showScreen(map[id]);
-    }
-    btn.addEventListener('touchend', go, {passive: false});
-    btn.addEventListener('click', go);
+    var btn=document.getElementById(id);
+    if(!btn)return;
+    function go(e){e.preventDefault();e.stopPropagation();showScreen(map[id]);}
+    btn.addEventListener('touchend',go,{passive:false});
+    btn.addEventListener('click',go);
   });
 })();
 </script>
 <nav class="bottom-nav" id="bottom-nav">
-  <button class="bn-item active" id="bn-home" onclick="showScreen('home')">
+  <button class="bn-item active" id="bn-home">
     <span class="bn-icon">🏠</span>Inicio
   </button>
-  <button class="bn-item" id="bn-explorer" onclick="showScreen('explorer')">
+  <button class="bn-item" id="bn-explorer">
     <span class="bn-icon">🔭</span>Elementos
   </button>
-  <button class="bn-item" id="bn-stats" onclick="showScreen('stats')">
+  <button class="bn-item" id="bn-stats">
     <span class="bn-icon">📊</span>Progreso
   </button>
 </nav>
