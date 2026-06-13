@@ -186,14 +186,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(15,15,26,0.92);backdrop-fi
   }
   .bn-item{
     flex:1;display:flex;flex-direction:column;align-items:center;
-    gap:3px;padding:6px 4px;cursor:pointer;
+    gap:3px;padding:8px 4px;cursor:pointer;
     font-size:.62rem;font-weight:700;color:var(--texto-sub);
     transition:color .2s;border:none;background:transparent;
     font-family:'Nunito',sans-serif;
     touch-action:manipulation;
     -webkit-tap-highlight-color:rgba(0,200,150,.2);
-    user-select:none;-webkit-user-select:none;
+    -webkit-user-select:none;user-select:none;
   }
+  .bn-item:active{color:var(--verde);transform:scale(.94);}
   .bn-item.active,.bn-item:hover{color:var(--verde);}
   .bn-icon{font-size:1.35rem;line-height:1;}
 }
@@ -284,7 +285,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(15,15,26,0.92);backdrop-fi
   </div>
 </div>
 
-<!-- BOTTOM NAV — visible solo en móvil -->
+
+
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav" id="bottom-nav">
   <button class="bn-item active" id="bn-home">
     <span class="bn-icon">🏠</span>Inicio
@@ -995,30 +998,19 @@ function showToast(msg){
   clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-init();
 
-// Bottom-nav táctil explícito
+// Bottom-nav: listeners tactiles para movil
 (function(){
   var map={'bn-home':'home','bn-explorer':'explorer','bn-stats':'stats'};
   Object.keys(map).forEach(function(id){
     var btn=document.getElementById(id);
     if(!btn)return;
-    function go(e){e.preventDefault();e.stopPropagation();showScreen(map[id]);}
-    btn.addEventListener('touchend',go,{passive:false});
+    function go(e){if(e){e.preventDefault();e.stopPropagation();}showScreen(map[id]);}
     btn.addEventListener('click',go);
   });
 })();
+init();
 </script>
-<nav class="bottom-nav" id="bottom-nav">
-  <button class="bn-item active" id="bn-home">
-    <span class="bn-icon">🏠</span>Inicio
-  </button>
-  <button class="bn-item" id="bn-explorer">
-    <span class="bn-icon">🔭</span>Elementos
-  </button>
-  <button class="bn-item" id="bn-stats">
-    <span class="bn-icon">📊</span>Progreso
-  </button>
-</nav>
+
 </body>
 </html>
